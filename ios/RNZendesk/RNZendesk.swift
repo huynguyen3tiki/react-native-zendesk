@@ -64,8 +64,13 @@ class RNZendesk: RCTEventEmitter {
     func showHelpCenter(with options: [String: Any]) {
         DispatchQueue.main.async {
             let hcConfig = HelpCenterUiConfiguration()
+            let requestConfig = RequestUiConfiguration()
+            if let tags = options["tags"] as? [String] {
+                requestConfig.tags = tags
+            }
+            
             hcConfig.hideContactSupport = (options["hideContactSupport"] as? Bool) ?? false
-            let helpCenter = HelpCenterUi.buildHelpCenterOverviewUi(withConfigs: [hcConfig])
+            let helpCenter = HelpCenterUi.buildHelpCenterOverviewUi(withConfigs: [hcConfig,requestConfig])
             
             let nvc = UINavigationController(rootViewController: helpCenter)
             UIApplication.shared.keyWindow?.rootViewController?.present(nvc, animated: true, completion: nil)
